@@ -1,0 +1,17 @@
+version: "3"
+services:
+  ubuntu:
+    container_name: ubuntu
+    image: pycontribs/ubuntu:latest
+    restart: on-failure
+    command: ["sleep", "infinity"]
+  centos:
+    container_name: centos7
+    image: pycontribs/centos:7
+    restart: on-failure
+    command: ["sleep", "infinity"]
+  fedora:
+    container_name: fedora
+    image: pycontribs/fedora:latest
+    restart: on-failure
+    command: ["sleep", "infinity"]

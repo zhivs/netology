@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: multitool
+  name: multitool
+spec:
+  containers:
+  - name: multitool
+    image: wbitt/network-multitool
+    ports:
+    - name: "multitool-http"
+      containerPort: 1180
+    - name: "multitool-https"
+      containerPort: 11443
+    env:
+    - name: HTTP_PORT
+      value: "1180"
+    - name: HTTPS_PORT
+      value: "11443"
+...

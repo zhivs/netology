@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: netology-web
+spec:
+  selector:
+    matchLabels:
+      app: netology
+  template:
+    metadata:
+      labels:
+        app: netology
+    spec:
+      containers:
+      - name: netology-web
+        image: gcr.io/kubernetes-e2e-test-images/echoserver:2.2
+        ports:
+        - containerPort: 8443

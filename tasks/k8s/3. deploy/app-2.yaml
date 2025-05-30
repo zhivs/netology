@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-task2
+  labels:
+    app: app2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app2
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        startupProbe:
+          httpGet:
+            path: /
+            port: 80
+          failureThreshold: 6
+          periodSeconds: 10
+      initContainers:
+      - name: wait-svc
+        image: busybox
+        command: ['sh', '-c', "until nslookup svc-task2.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+...

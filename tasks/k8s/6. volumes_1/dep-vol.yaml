@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multitool-busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: main
+  template:
+    metadata:
+      labels:
+        app: main
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        command: ['sh', '-c', 'while true; do echo "current date = $(date)" >> /busybox_dir/date.log; sleep 5; done']
+        volumeMounts:
+          - mountPath: "/busybox_dir"
+            name: deployment-volume
+      - name: multitool
+        image: wbitt/network-multitool
+        volumeMounts:
+          - name: deployment-volume
+            mountPath: "/multitool_dir"
+      volumes:
+        - name: deployment-volume
+          emptyDir: {}

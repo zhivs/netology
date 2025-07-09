@@ -1,0 +1,25 @@
+pg_stat_statements:
+  query: |
+    SELECT 
+      round((100 * st.mean_exec_time/sum(st.mean_exec_time::numeric) OVER ())::numeric, 2) AS percentage_cpu,
+      to_hex(st.queryid) || ' ' || substring(st.query, 1, 50) AS short_query,
+      db.datname AS datname,
+      st.userid AS userid
+    FROM pg_stat_statements AS st
+    JOIN pg_database AS db ON db.oid = st.dbid
+    ORDER BY st.mean_exec_time DESC
+    LIMIT 10
+  metrics:
+    - datname:
+        usage: "LABEL"
+        description: "Название базы данных"
+    - short_query:
+        usage: "LABEL"
+        description: "SQL запрос"
+    - userid:
+        usage: "LABEL"
+        description: "ID пользователя"
+    - percentage_cpu:
+        usage: "GAUGE"
+        description: "Процент CPU времени запроса"
+
